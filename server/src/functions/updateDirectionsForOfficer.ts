@@ -15,19 +15,8 @@
  */
 
 import app from '../config/firebaseConfig';
-import geodist from 'geodist';
-import { firestore  } from 'firebase';
 import { OfficerDestinationService } from '../services';
 
-function arePointsTooFar(pointA: firestore.GeoPoint, pointB: firestore.GeoPoint) {
-  return geodist({
-    lat: pointA.latitude,
-    lon: pointA.longitude
-  }, {
-    lat: pointB.latitude,
-    lon: pointB.longitude
-  }) > 50;
-}
 
 const firestoreApp = app.firestore();
 
@@ -43,23 +32,22 @@ firestoreApp.collection('officers').onSnapshot(async (snapshot) => {
     let officerData = change.doc.data();
 
     /**
-     * First check if there's a officers_destination this this officer owns
+     * First check if there's a officers_destination that this officer owns
      */
-    let officerDestination = await firestoreApp.collection('officers_destination').doc(change.doc.id).get();
+    let officerDestinationRef = firestoreApp.collection('officers_destination').doc(change.doc.id);
+
+    let officerDestination = await officerDestinationRef.get();
 
     if (officerDestination.exists) {
-      let officerDestinationData = officerDestination.data();
-
-      let start = officerDestinationData.start;
-
-      if (arePointsTooFar(officerData.location, officerDestinationData.start)) {
-        // Recalculate and update
-        let navigateToOfficer = await firestoreApp.collection('officers').doc(officerDestinationData.officerId).get();
-        let navigateToOfficerData = navigateToOfficer.data();
-
-        await OfficerDestinationService.setRouteBetweenOfficers(officerData, navigateToOfficerData, officerDestination.ref);
-      }
+      OfficerDestinationService.ensureOfficerDestinationFresh(officerDestinationRef);
     }
+
+    /**
+     * Next let's check for routes that have this officer as the end point
+     */
+    let officerDestinations = await firestoreApp.collection('officers_destination').where('officerId', '==', change.doc.id).get();
+
+    officerDestinations.forEach(documentSnapshot => OfficerDestinationService.ensureOfficerDestinationFresh(documentSnapshot.ref));
   }
 });
 

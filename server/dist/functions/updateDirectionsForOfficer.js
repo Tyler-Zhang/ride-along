@@ -27,17 +27,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const firebaseConfig_1 = __importDefault(require("../config/firebaseConfig"));
-const geodist_1 = __importDefault(require("geodist"));
 const services_1 = require("../services");
-function arePointsTooFar(pointA, pointB) {
-    return geodist_1.default({
-        lat: pointA.latitude,
-        lon: pointA.longitude
-    }, {
-        lat: pointB.latitude,
-        lon: pointB.longitude
-    }) > 50;
-}
 const firestoreApp = firebaseConfig_1.default.firestore();
 firestoreApp.collection('officers').onSnapshot((snapshot) => __awaiter(this, void 0, void 0, function* () {
     for (let change of snapshot.docChanges()) {
@@ -49,19 +39,18 @@ firestoreApp.collection('officers').onSnapshot((snapshot) => __awaiter(this, voi
         }
         let officerData = change.doc.data();
         /**
-         * First check if there's a officers_destination this this officer owns
+         * First check if there's a officers_destination that this officer owns
          */
-        let officerDestination = yield firestoreApp.collection('officers_destination').doc(change.doc.id).get();
+        let officerDestinationRef = firestoreApp.collection('officers_destination').doc(change.doc.id);
+        let officerDestination = yield officerDestinationRef.get();
         if (officerDestination.exists) {
-            let officerDestinationData = officerDestination.data();
-            let start = officerDestinationData.start;
-            if (arePointsTooFar(officerData.location, officerDestinationData.start)) {
-                // Recalculate and update
-                let navigateToOfficer = yield firestoreApp.collection('officers').doc(officerDestinationData.officerId).get();
-                let navigateToOfficerData = navigateToOfficer.data();
-                yield services_1.OfficerDestinationService.setRouteBetweenOfficers(officerData, navigateToOfficerData, officerDestination.ref);
-            }
+            services_1.OfficerDestinationService.ensureOfficerDestinationFresh(officerDestinationRef);
         }
+        /**
+         * Next let's check for routes that have this officer as the end point
+         */
+        let officerDestinations = yield firestoreApp.collection('officers_destination').where('officerId', '==', change.doc.id).get();
+        officerDestinations.forEach(documentSnapshot => services_1.OfficerDestinationService.ensureOfficerDestinationFresh(documentSnapshot.ref));
     }
 }));
 //# sourceMappingURL=updateDirectionsForOfficer.js.map
