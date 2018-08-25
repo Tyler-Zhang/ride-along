@@ -1,3 +1,8 @@
+import {firestore} from 'firebase';
+import {app} from '../config/firebaseConfig';
+
+const firestoreApp = app.firestore();
+
 async function run() {
 
   const fakeData = [
