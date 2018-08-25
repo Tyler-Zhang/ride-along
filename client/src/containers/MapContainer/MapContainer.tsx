@@ -5,15 +5,16 @@ import { Dispatch } from 'redux';
 import { getOfficers } from '../../hocs';
 import { MAP_TRACK_OFFICER } from '../../store/mapReducer';
 import { IState } from '../../store/store';
+import { WithId } from '../../types/models';
 import { IOfficer } from '../../types/models/Officer';
 import MapComponent from './MapComponent/MapComponent';
 
 interface IProps {
   selfName: string;
   officers: IOfficer[];
-  selfOfficer: IOfficer | null;
+  selfOfficer: WithId<IOfficer> | null;
   isTrackingOfficer: boolean;
-  trackedOfficer: IOfficer | null;
+  trackedOfficer: WithId<IOfficer> | null;
 
   trackOfficer: (officerId: string) => any;
 }

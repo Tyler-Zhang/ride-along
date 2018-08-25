@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import store from './store/store';
 
 import MapContainer from './containers/MapContainer/MapContainer';
+import PickNameContainer from './containers/PickNameContainer/PickNameContainer';
 
 import './App.css'
 
@@ -11,7 +12,9 @@ class App extends React.Component {
     return (
       <Provider store={store}>
         <div className="app">
-          <MapContainer/>
+          <PickNameContainer>
+            <MapContainer/>
+          </PickNameContainer>
         </div>
       </Provider>
     );
