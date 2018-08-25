@@ -5,6 +5,8 @@ export const OFFICERS_COLLECTION = 'officers';
 
 export const OFFICERS_DESTINATION_COLLECTION = 'officers_destination';
 
+export const EVENTS_COLLECTION = 'events';
+
 const config = {
   apiKey: "AIzaSyAOos6vjP1Dro002uRz4dbMlXNzawYF914",
   authDomain: "police-232a4.firebaseapp.com",

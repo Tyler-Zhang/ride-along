@@ -5,6 +5,7 @@ import { compose } from 'recompose';
 import { Dispatch } from 'redux';
 import { OFFICERS_DESTINATION_COLLECTION } from '../../config/firebaseConfig';
 import { getOfficers } from '../../hocs';
+import { OfficerDestinationService } from '../../services';
 import { MAP_TRACK_OFFICER } from '../../store/mapReducer';
 import { IState } from '../../store/store';
 import { WithId } from '../../types/models';
@@ -48,23 +49,13 @@ class MapContainer extends React.Component<IProps> {
   }
 
   private onClickNavigateTo = async (officerId: string) => {
-    // Delete id from officers_location if it exists
-    const firestore = this.props.firestore;
-
     const selfOfficer = this.props.selfOfficer;
 
     if (!selfOfficer) {
       return;
     }
 
-    await firestore.collection(OFFICERS_DESTINATION_COLLECTION).doc(selfOfficer.id)
-      .delete();
-
-    await firestore.collection(OFFICERS_DESTINATION_COLLECTION).doc(selfOfficer.id)
-      .set({
-        type: 'officer',
-        officerId
-      });
+    return OfficerDestinationService.navigateToOfficer(selfOfficer.id, officerId);
   }
 }
 
