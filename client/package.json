@@ -6,9 +6,10 @@
     "firebase": "^5.4.1",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
+    "react-map-gl": "^3.3.4",
     "react-redux": "^5.0.7",
     "react-redux-firebase": "^2.1.8",
-    "react-scripts": "1.1.5",
+    "react-scripts-ts": "2.17.0",
     "recompose": "^0.28.2",
     "redux": "^4.0.0",
     "redux-devtools-extension": "^2.13.5",
@@ -16,9 +17,19 @@
     "reform": "^0.3.16"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.1",
+    "@types/node": "^10.9.2",
+    "@types/react": "^16.4.11",
+    "@types/react-dom": "^16.0.7",
+    "@types/react-map-gl": "^3.3.1",
+    "@types/react-redux": "^6.0.6",
+    "@types/recompose": "^0.26.4",
+    "typescript": "^3.0.1"
   }
 }

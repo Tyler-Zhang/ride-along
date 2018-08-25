@@ -1,16 +1,17 @@
-import { createStore, compose, applyMiddleware } from 'redux';
+import { reactReduxFirebase } from 'react-redux-firebase';
+import { applyMiddleware, createStore, Middleware, Reducer, StoreEnhancer } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import { reduxFirestore } from 'redux-firestore';
 import firebaseApp from '../config/firebaseConfig';
-import { reactReduxFirebase } from 'react-redux-firebase';
 
-const createApplicationStore = (rootReducer) => {
-  const middleware = [];
-  const enhancers = [];
+const createApplicationStore = (rootReducer: Reducer) => {
+  const middleware: Middleware[] = [];
+  const enhancers: StoreEnhancer[] = [];
 
   /* ------------- Firebase Enhancer ----------------- */
   const firebaseConfig = {
-    userProfile: 'officers',
-    useFirestoreForProfile: true
+    useFirestoreForProfile: true,
+    userProfile: 'officers'
   };
 
   enhancers.push(
@@ -23,12 +24,9 @@ const createApplicationStore = (rootReducer) => {
   enhancers.push(applyMiddleware(...middleware));
 
 
-  const composeEnhancers =
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
   const store = createStore(
     rootReducer,
-    composeEnhancers(...enhancers)
+    composeWithDevTools(...enhancers)
   );
 
   return store;

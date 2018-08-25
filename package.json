@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "react-map-gl": "^3.3.4"
+  }
+}

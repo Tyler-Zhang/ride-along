@@ -1,9 +1,15 @@
-import createStore from './createStore';
-import { combineReducers } from 'redux';
 import { firebaseReducer } from 'react-redux-firebase';
+import { combineReducers } from 'redux';
 import { firestoreReducer } from 'redux-firestore';
+import createStore from './createStore';
 
-import userReducer from './UserReducer';
+import userReducer, { IUserState } from './userReducer';
+
+export interface IState {
+  firebase: any,
+  firestore: any,
+  user: IUserState
+}
 
 const reducers = combineReducers({
   firebase: firebaseReducer,
