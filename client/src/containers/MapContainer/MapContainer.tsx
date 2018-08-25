@@ -1,17 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'recompose';
 import { Dispatch } from 'redux';
+import { OFFICERS_DESTINATION_COLLECTION } from '../../config/firebaseConfig';
 import { getOfficers } from '../../hocs';
 import { MAP_TRACK_OFFICER } from '../../store/mapReducer';
 import { IState } from '../../store/store';
 import { WithId } from '../../types/models';
 import { IOfficer } from '../../types/models/Officer';
+import { OfficerDestination } from '../../types/models/OfficerDestination';
 import MapComponent from './MapComponent/MapComponent';
 
 interface IProps {
   selfName: string;
   officers: IOfficer[];
+  officerDestinations: Array<WithId<OfficerDestination>>,
   selfOfficer: WithId<IOfficer> | null;
   isTrackingOfficer: boolean;
   trackedOfficer: WithId<IOfficer> | null;
@@ -36,6 +40,7 @@ class MapContainer extends React.Component<IProps> {
         trackedOfficer={this.props.trackedOfficer}
         officers={this.props.officers || []}
         isTrackingOfficer={this.props.isTrackingOfficer}
+        officerDestinations={this.props.officerDestinations || []}
       />
     )
   }
@@ -44,19 +49,22 @@ class MapContainer extends React.Component<IProps> {
 export default compose(
   getOfficers,
 
+  firestoreConnect([OFFICERS_DESTINATION_COLLECTION]),
+
   /**
    * Inject the officer that we should be tracking
    */
   connect((state: IState) => {
-    if (state.map.isTrackingOfficer) {
-      return {
-        isTrackingOfficer: state.map.isTrackingOfficer,
-        trackedOfficer: state.firestore.data.officers[state.map.officerId]
-      };
-    }
-    return {
+    const returnObj: any = {
       isTrackingOfficer: state.map.isTrackingOfficer,
+      officerDestinations: state.firestore.ordered[OFFICERS_DESTINATION_COLLECTION]
     };
+
+    if (state.map.isTrackingOfficer) {
+      returnObj.trackedOfficer = state.firestore.data.officers[state.map.officerId];
+    }
+
+    return returnObj;
   }, (dispatch: Dispatch) => ({
     trackOfficer: (officerId: string) => dispatch({ type: MAP_TRACK_OFFICER, payload: { officerId }})
   }))

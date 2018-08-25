@@ -3,13 +3,13 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { firestoreConnect, isEmpty, isLoaded } from 'react-redux-firebase';
 import { branch, compose, renderComponent, withState } from 'recompose';
-import { OFFICERS_COLLECTION, OFFICERS_DESTINATION_COLLECTION } from '../../config/firebaseConfig';
+import { OFFICERS_COLLECTION } from '../../config/firebaseConfig';
 import { IState } from '../../store/store';
 import { IOfficer } from '../../types/models';
 
+import { firestore } from 'firebase';
 import { Dispatch } from 'redux';
 import { USER_SET_NAME } from '../../store/userReducer';
-import { OfficerDestination } from '../../types/models/OfficerDestination';
 import PickNameComponent from './PickNameComponent/PickNameComponent';
 
 interface IProps {
@@ -78,26 +78,16 @@ class PickNameContainer extends React.Component<IProps> {
       isInDanger: false,
       isRequestingAssistance: false,
       isTalking: false,
-      location: {
-        longitude: 37,
-        latitude: 23
-      },
+      location: new firestore.GeoPoint(43, -79),
       name,
       squad: '',
       transportation: 'car'      
     };
 
-    const officerDestinationObject: OfficerDestination = { type: 'none' };
-
-    const officer = await this.props.firestore
+    await this.props.firestore
       .collection(OFFICERS_COLLECTION)
       .add(officerObject);
 
-    await this.props.firestore
-      .collection(OFFICERS_DESTINATION_COLLECTION)
-      .doc(officer.id)
-      .set(officerDestinationObject);
-    
     this.props.loginWithName(name);
   }
 }

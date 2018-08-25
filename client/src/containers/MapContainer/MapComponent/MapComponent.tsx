@@ -3,7 +3,8 @@ import * as React from 'react';
 import ReactMapGL, { Viewport } from 'react-map-gl';
 import ResizeAware from 'react-resize-aware';
 import { API_KEY } from '../../../config/mapboxConfig';
-import { IOfficer } from '../../../types/models';
+import { IOfficer, WithId } from '../../../types/models';
+import { OfficerDestination } from '../../../types/models/OfficerDestination';
 import './MapComponent.css';
 import OfficerMarker from './OfficerMaker/OfficerMarker';
 
@@ -12,6 +13,7 @@ interface IProps {
   trackedOfficer: IOfficer | null;
   officers: IOfficer[];
   isTrackingOfficer: boolean;
+  officerDestinations: Array<WithId<OfficerDestination>>
 }
 
 interface IState {
@@ -20,6 +22,9 @@ interface IState {
 }
 
 export default class MapComponent extends React.Component<IProps, IState> {
+  private routeLayerIds: string[] = [];
+  private mapRef = React.createRef();
+
   constructor(props: IProps) {
     super(props);
 
@@ -48,6 +53,10 @@ export default class MapComponent extends React.Component<IProps, IState> {
 
       this.setState({ viewport: newViewport });
     }
+
+    if (this.props.officerDestinations !== nextProps.officerDestinations) {
+      this.setRoutesAsLayers(nextProps);
+    }
   }
 
   public render() {
@@ -60,6 +69,7 @@ export default class MapComponent extends React.Component<IProps, IState> {
             mapboxApiAccessToken={API_KEY}
             onViewportChange={this.changeViewport}
             mapStyle="mapbox://styles/mapbox/navigation-preview-day-v2"
+            ref={this.mapRef as any}
           >
             {
               this.props.officers.map(officer => <OfficerMarker officer={officer} key={officer.name}/>)
@@ -86,5 +96,45 @@ export default class MapComponent extends React.Component<IProps, IState> {
 
   private handleResize = ({width, height}: { width: number, height: number}) => {
     this.setState({ window: { width, height }});
+  }
+
+  private setRoutesAsLayers = (props = this.props) => {
+    const mapRef = this.mapRef.current;
+    if (!mapRef) {
+      return;
+    }
+
+    const map = (mapRef as any).getMap();
+    
+    // Remove existing route layers
+    this.routeLayerIds.forEach(id => map.removeLayer(id));
+
+    this.routeLayerIds = [];
+
+    // Add new route layers
+    for (const officerDestination of props.officerDestinations) {
+      const id = officerDestination.id;
+
+      try {
+        map.addLayer({
+          id,
+          type: 'line',
+          source: {
+            type: 'geojson',
+            data: {
+              type: 'Feature',
+              geometry: JSON.parse(officerDestination.route)
+            }
+          },
+          paint: {
+            'line-width': 2
+          }
+        });
+
+        this.routeLayerIds.push(id);
+      } catch (e) {
+        console.error(e);
+      }
+    }
   }
 }

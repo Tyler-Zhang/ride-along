@@ -1,10 +1,7 @@
-export interface IOfficerDestinationNone {
-  type: 'none';
-}
-
 export interface IOfficerDestinationOfficer {
   type: 'officer';
   officerId: string;
+  route: string;
 }
 
-export type OfficerDestination = IOfficerDestinationNone | IOfficerDestinationOfficer;
+export type OfficerDestination = IOfficerDestinationOfficer;
