@@ -1,6 +1,8 @@
 import { Button, Input } from 'antd';
 import * as React from 'react';
 
+import './PickNameComponent.css';
+
 interface IProps {
   name: string;
   onSetName: (name: string) => any;
