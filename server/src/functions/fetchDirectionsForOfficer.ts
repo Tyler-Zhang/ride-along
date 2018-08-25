@@ -1,6 +1,5 @@
 import app from '../config/firebaseConfig';
-import { DirectionsService } from '../lib/mapbox';
-import { API_KEY } from '../config/mapboxConfig';
+import { OfficerDestinationService } from '../services';
 
 const firestore = app.firestore();
 
@@ -30,12 +29,10 @@ firestore.collection('officers_destination').where('type', '==', 'officer').onSn
     let officer = await firestore.collection('officers').doc(officerId).get();
     let navigateToOfficer = await firestore.collection('officers').doc(navigateToOfficerId).get();
 
-    const route = await new DirectionsService(API_KEY).getRoute(
-      officer.data().location, 
-      navigateToOfficer.data().location
-    );
+    let officerData = officer.data();
+    let navigateToOfficerData = navigateToOfficer.data();
 
-    change.doc.ref.set({ route: JSON.stringify(route) }, { merge: true });
+    OfficerDestinationService.setRouteBetweenOfficers(officerData, navigateToOfficerData, change.doc.ref);
   }
 });
 

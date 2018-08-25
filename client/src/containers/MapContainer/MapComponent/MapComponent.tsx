@@ -9,11 +9,12 @@ import './MapComponent.css';
 import OfficerMarker from './OfficerMaker/OfficerMarker';
 
 interface IProps {
-  selfOfficer: IOfficer | null;
-  trackedOfficer: IOfficer | null;
-  officers: IOfficer[];
+  selfOfficer: WithId<IOfficer> | null;
+  trackedOfficer: WithId<IOfficer> | null;
+  officers: Array<WithId<IOfficer>>;
   isTrackingOfficer: boolean;
-  officerDestinations: Array<WithId<OfficerDestination>>
+  officerDestinations: Array<WithId<OfficerDestination>>;
+  onClickNavigateTo: (officerId: string) => any;
 }
 
 interface IState {
@@ -24,6 +25,7 @@ interface IState {
 export default class MapComponent extends React.Component<IProps, IState> {
   private routeLayerIds: string[] = [];
   private mapRef = React.createRef();
+  private updateMapMutex = false;
 
   constructor(props: IProps) {
     super(props);
@@ -72,7 +74,14 @@ export default class MapComponent extends React.Component<IProps, IState> {
             ref={this.mapRef as any}
           >
             {
-              this.props.officers.map(officer => <OfficerMarker officer={officer} key={officer.name}/>)
+              this.props.officers.map(officer => (
+                <OfficerMarker 
+                  officer={officer} 
+                  onClickNavigateTo={this.onClickNavigateToFactory(officer.id)}
+                  key={officer.name}
+                />
+                )
+              )
             }
           </ReactMapGL>
         </div>
@@ -94,6 +103,8 @@ export default class MapComponent extends React.Component<IProps, IState> {
     this.setState({ viewport });
   }
 
+  private onClickNavigateToFactory = (officerId: string) => () => this.props.onClickNavigateTo(officerId);
+
   private handleResize = ({width, height}: { width: number, height: number}) => {
     this.setState({ window: { width, height }});
   }
@@ -104,10 +115,19 @@ export default class MapComponent extends React.Component<IProps, IState> {
       return;
     }
 
+    if (this.updateMapMutex) {
+      return;
+    }
+
+    this.updateMapMutex = true;
+
     const map = (mapRef as any).getMap();
     
     // Remove existing route layers
-    this.routeLayerIds.forEach(id => map.removeLayer(id));
+    this.routeLayerIds.forEach(id => {
+      map.removeLayer(id);
+      map.removeSource(id);
+    });
 
     this.routeLayerIds = [];
 
@@ -116,16 +136,18 @@ export default class MapComponent extends React.Component<IProps, IState> {
       const id = officerDestination.id;
 
       try {
+        map.addSource(id, {
+          type: 'geojson',
+          data: {
+            type: 'Feature',
+            geometry: JSON.parse(officerDestination.route)
+          }
+        });
+
         map.addLayer({
           id,
           type: 'line',
-          source: {
-            type: 'geojson',
-            data: {
-              type: 'Feature',
-              geometry: JSON.parse(officerDestination.route)
-            }
-          },
+          source: id,
           paint: {
             'line-width': 2
           }
@@ -136,5 +158,7 @@ export default class MapComponent extends React.Component<IProps, IState> {
         console.error(e);
       }
     }
+
+    this.updateMapMutex = false;
   }
 }

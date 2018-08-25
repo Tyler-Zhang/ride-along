@@ -1,1 +1,2 @@
 import './fetchDirectionsForOfficer';
+import './updateDirectionsForOfficer';

@@ -519,6 +519,10 @@ gauge@~2.7.3:
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
 
+geodist@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/geodist/-/geodist-0.2.1.tgz#9619a5d935529335716faafad32228c29dc0b920"
+
 glob@^7.0.5:
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.2.tgz#c19c9df9a028702d678612384a6552404c636d15"

@@ -12,8 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const firebaseConfig_1 = __importDefault(require("../config/firebaseConfig"));
-const mapbox_1 = require("../lib/mapbox");
-const mapboxConfig_1 = require("../config/mapboxConfig");
+const services_1 = require("../services");
 const firestore = firebaseConfig_1.default.firestore();
 firestore.collection('officers_destination').where('type', '==', 'officer').onSnapshot((snapshot) => __awaiter(this, void 0, void 0, function* () {
     for (let change of snapshot.docChanges()) {
@@ -36,8 +35,9 @@ firestore.collection('officers_destination').where('type', '==', 'officer').onSn
         let navigateToOfficerId = data.officerId;
         let officer = yield firestore.collection('officers').doc(officerId).get();
         let navigateToOfficer = yield firestore.collection('officers').doc(navigateToOfficerId).get();
-        const route = yield new mapbox_1.DirectionsService(mapboxConfig_1.API_KEY).getRoute(officer.data().location, navigateToOfficer.data().location);
-        change.doc.ref.set({ route: JSON.stringify(route) }, { merge: true });
+        let officerData = officer.data();
+        let navigateToOfficerData = navigateToOfficer.data();
+        services_1.OfficerDestinationService.setRouteBetweenOfficers(officerData, navigateToOfficerData, change.doc.ref);
     }
 }));
 //# sourceMappingURL=fetchDirectionsForOfficer.js.map

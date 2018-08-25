@@ -9,10 +9,12 @@
   },
   "jsRules": {
     "object-literal-sort-keys": false,
-    "no-console": false
+    "no-console": false,
+    "no-debugger": false
   },
   "rules": {
     "object-literal-sort-keys": false,
-    "no-console": false
+    "no-console": false,
+    "no-debugger": false
   }
 }

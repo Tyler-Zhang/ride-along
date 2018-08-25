@@ -13,8 +13,9 @@ import { OfficerDestination } from '../../types/models/OfficerDestination';
 import MapComponent from './MapComponent/MapComponent';
 
 interface IProps {
+  firestore: firebase.firestore.Firestore;
   selfName: string;
-  officers: IOfficer[];
+  officers: Array<WithId<IOfficer>>;
   officerDestinations: Array<WithId<OfficerDestination>>,
   selfOfficer: WithId<IOfficer> | null;
   isTrackingOfficer: boolean;
@@ -41,8 +42,29 @@ class MapContainer extends React.Component<IProps> {
         officers={this.props.officers || []}
         isTrackingOfficer={this.props.isTrackingOfficer}
         officerDestinations={this.props.officerDestinations || []}
+        onClickNavigateTo={this.onClickNavigateTo}
       />
     )
+  }
+
+  private onClickNavigateTo = async (officerId: string) => {
+    // Delete id from officers_location if it exists
+    const firestore = this.props.firestore;
+
+    const selfOfficer = this.props.selfOfficer;
+
+    if (!selfOfficer) {
+      return;
+    }
+
+    await firestore.collection(OFFICERS_DESTINATION_COLLECTION).doc(selfOfficer.id)
+      .delete();
+
+    await firestore.collection(OFFICERS_DESTINATION_COLLECTION).doc(selfOfficer.id)
+      .set({
+        type: 'officer',
+        officerId
+      });
   }
 }
 
