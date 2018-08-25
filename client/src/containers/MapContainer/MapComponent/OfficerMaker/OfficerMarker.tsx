@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Marker } from 'react-map-gl';
+import Popover from '../../../../components/Popover/Popover';
 import Pulse from '../../../../components/Pulse/Pulse';
 import { IOfficer } from '../../../../types/models';
 import bike from './bike.svg';
@@ -25,7 +26,12 @@ export default ({ officer }: IProps) => (
   >
     <div className="marker">
       <Pulse enabled={officer.isInDanger || officer.isRequestingAssistance}>
-        <img className="icon" src={getAppropriateImage(officer)}/>
+        <Popover
+          content={<span> speaking... </span>}
+          enable={officer.isTalking}
+        >
+          <img className="icon" src={getAppropriateImage(officer)}/>
+        </Popover>
       </Pulse>
     </div>
   </Marker>

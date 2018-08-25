@@ -32,7 +32,7 @@ export default class Pulse extends React.PureComponent<IProps, IState> {
   public render() {
     return (
       <div 
-        className={this.props.enabled ? "pulse" : ""} 
+        className={`pulse${this.props.enabled ? " pulse-enabled" : ""}`} 
         ref={this.containerRef as any} 
         style={{ height: this.state.height }}
       >

@@ -37,7 +37,6 @@ export default class MapComponent extends React.Component<IProps, IState> {
 
   public componentWillReceiveProps(nextProps: IProps) {
     const selfOfficer = nextProps.selfOfficer;
-    console.log(selfOfficer)
 
     if (this.state.isCenteredOnSelf && selfOfficer) {
       const newViewport = {
