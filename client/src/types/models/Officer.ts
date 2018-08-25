@@ -15,6 +15,7 @@ export interface IDestinationOfficer {
 export type IDestination = IDestinationNone | IDestinationOfficer
 
 export interface IOfficer {
+  id: string;
   name: string;
   squad: string;
   location: ILocation;

@@ -14,6 +14,7 @@ interface IProps {
 interface IState {
   viewport: Viewport;
   window: { width: number, height: number };
+  isCenteredOnSelf: boolean;
 }
 
 export default class MapComponent extends React.Component<IProps, IState> {
@@ -29,8 +30,24 @@ export default class MapComponent extends React.Component<IProps, IState> {
         zoom: 8,
         longitude: -79,
         latitude: 43
-      }
+      },
+      isCenteredOnSelf: true
     };
+  }
+
+  public componentWillReceiveProps(nextProps: IProps) {
+    const selfOfficer = nextProps.selfOfficer;
+    console.log(selfOfficer)
+
+    if (this.state.isCenteredOnSelf && selfOfficer) {
+      const newViewport = {
+        ...this.state.viewport,
+        longitude: selfOfficer.location.longitude,
+        latitude: selfOfficer.location.latitude
+      };
+
+      this.setState({ viewport: newViewport });
+    }
   }
 
   public render() {
@@ -49,5 +66,9 @@ export default class MapComponent extends React.Component<IProps, IState> {
     )
   }
 
-  private changeViewport = (viewport: Viewport) => this.setState({ viewport })
+  private changeViewport = (viewport: Viewport) => {
+    if(!this.state.isCenteredOnSelf) {
+      this.setState({ viewport })
+    }
+  }
 }
