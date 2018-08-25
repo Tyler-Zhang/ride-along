@@ -10,7 +10,9 @@ class App extends React.Component {
   public render() {
     return (
       <Provider store={store}>
-        <MapContainer/>
+        <div className="app">
+          <MapContainer/>
+        </div>
       </Provider>
     );
   }

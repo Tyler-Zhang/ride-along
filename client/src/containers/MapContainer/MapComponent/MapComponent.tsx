@@ -1,6 +1,7 @@
 import 'mapbox-gl/dist/mapbox-gl.css';
 import * as React from 'react';
 import ReactMapGL, { Viewport } from 'react-map-gl';
+import ResizeAware from 'react-resize-aware';
 import { API_KEY } from '../../../config/mapboxConfig';
 import { IOfficer } from '../../../types/models';
 import './MapComponent.css';
@@ -52,17 +53,19 @@ export default class MapComponent extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <ReactMapGL
-        {...this.state.window}
-        {...this.state.viewport}
-        mapboxApiAccessToken={API_KEY}
-        onViewportChange={this.changeViewport}
-        mapStyle="mapbox://styles/mapbox/navigation-preview-day-v2"
-      >
-        {
-          this.props.officers.map(officer => <OfficerMarker officer={officer} key={officer.name}/>)
-        }
-      </ReactMapGL>
+      <ResizeAware onResize={this.handleResize} className="map-component">
+        <ReactMapGL
+          {...this.state.window}
+          {...this.state.viewport}
+          mapboxApiAccessToken={API_KEY}
+          onViewportChange={this.changeViewport}
+          mapStyle="mapbox://styles/mapbox/navigation-preview-day-v2"
+        >
+          {
+            this.props.officers.map(officer => <OfficerMarker officer={officer} key={officer.name}/>)
+          }
+        </ReactMapGL>
+      </ResizeAware>
     )
   }
 
@@ -70,5 +73,9 @@ export default class MapComponent extends React.Component<IProps, IState> {
     if(!this.state.isCenteredOnSelf) {
       this.setState({ viewport })
     }
+  }
+
+  private handleResize = ({width, height}: { width: number, height: number}) => {
+    this.setState({ window: { width, height }});
   }
 }

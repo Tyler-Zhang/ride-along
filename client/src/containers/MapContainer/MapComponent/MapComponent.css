@@ -6,3 +6,7 @@
 .marker * {
   width: 100%;
 }
+
+.map-component {
+  flex: 1;
+}
