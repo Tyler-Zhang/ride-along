@@ -11,12 +11,12 @@ interface IProps {
   selfOfficer: IOfficer | null;
   trackedOfficer: IOfficer | null;
   officers: IOfficer[];
+  isTrackingOfficer: boolean;
 }
 
 interface IState {
   viewport: Viewport;
   window: { width: number, height: number };
-  isCenteredOnSelf: boolean;
 }
 
 export default class MapComponent extends React.Component<IProps, IState> {
@@ -32,15 +32,14 @@ export default class MapComponent extends React.Component<IProps, IState> {
         zoom: 8,
         longitude: -79,
         latitude: 43
-      },
-      isCenteredOnSelf: true
+      }
     };
   }
 
   public componentWillReceiveProps(nextProps: IProps) {
     const trackedOfficer = nextProps.trackedOfficer;
 
-    if (this.state.isCenteredOnSelf && trackedOfficer) {
+    if (this.props.isTrackingOfficer && trackedOfficer) {
       const newViewport = {
         ...this.state.viewport,
         longitude: trackedOfficer.location.longitude,
@@ -72,9 +71,17 @@ export default class MapComponent extends React.Component<IProps, IState> {
   }
 
   private changeViewport = (viewport: Viewport) => {
-    if(!this.state.isCenteredOnSelf) {
-      this.setState({ viewport })
+    const {isTrackingOfficer, trackedOfficer} = this.props;
+
+    delete (viewport as any).width;
+    delete (viewport as any).height;
+
+    if (isTrackingOfficer && trackedOfficer) {
+      viewport.longitude = trackedOfficer.location.longitude;
+      viewport.latitude = trackedOfficer.location.latitude;
     }
+
+    this.setState({ viewport });
   }
 
   private handleResize = ({width, height}: { width: number, height: number}) => {

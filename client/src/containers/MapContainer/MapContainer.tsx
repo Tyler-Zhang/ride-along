@@ -12,6 +12,7 @@ interface IProps {
   selfName: string;
   officers: IOfficer[];
   selfOfficer: IOfficer | null;
+  isTrackingOfficer: boolean;
   trackedOfficer: IOfficer | null;
 
   trackOfficer: (officerId: string) => any;
@@ -33,6 +34,7 @@ class MapContainer extends React.Component<IProps> {
         selfOfficer={this.props.selfOfficer}
         trackedOfficer={this.props.trackedOfficer}
         officers={this.props.officers || []}
+        isTrackingOfficer={this.props.isTrackingOfficer}
       />
     )
   }
@@ -47,10 +49,13 @@ export default compose(
   connect((state: IState) => {
     if (state.map.isTrackingOfficer) {
       return {
+        isTrackingOfficer: state.map.isTrackingOfficer,
         trackedOfficer: state.firestore.data.officers[state.map.officerId]
       };
     }
-    return {};
+    return {
+      isTrackingOfficer: state.map.isTrackingOfficer,
+    };
   }, (dispatch: Dispatch) => ({
     trackOfficer: (officerId: string) => dispatch({ type: MAP_TRACK_OFFICER, payload: { officerId }})
   }))
