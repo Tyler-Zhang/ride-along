@@ -8,6 +8,7 @@ import OfficerMarker from './OfficerMaker/OfficerMarker';
 
 interface IProps {
   selfOfficer: IOfficer | null;
+  trackedOfficer: IOfficer | null;
   officers: IOfficer[];
 }
 
@@ -36,13 +37,13 @@ export default class MapComponent extends React.Component<IProps, IState> {
   }
 
   public componentWillReceiveProps(nextProps: IProps) {
-    const selfOfficer = nextProps.selfOfficer;
+    const trackedOfficer = nextProps.trackedOfficer;
 
-    if (this.state.isCenteredOnSelf && selfOfficer) {
+    if (this.state.isCenteredOnSelf && trackedOfficer) {
       const newViewport = {
         ...this.state.viewport,
-        longitude: selfOfficer.location.longitude,
-        latitude: selfOfficer.location.latitude
+        longitude: trackedOfficer.location.longitude,
+        latitude: trackedOfficer.location.latitude
       };
 
       this.setState({ viewport: newViewport });
