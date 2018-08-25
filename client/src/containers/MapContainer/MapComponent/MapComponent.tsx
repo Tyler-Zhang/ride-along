@@ -54,17 +54,19 @@ export default class MapComponent extends React.Component<IProps, IState> {
   public render() {
     return (
       <ResizeAware onResize={this.handleResize} className="map-component">
-        <ReactMapGL
-          {...this.state.window}
-          {...this.state.viewport}
-          mapboxApiAccessToken={API_KEY}
-          onViewportChange={this.changeViewport}
-          mapStyle="mapbox://styles/mapbox/navigation-preview-day-v2"
-        >
-          {
-            this.props.officers.map(officer => <OfficerMarker officer={officer} key={officer.name}/>)
-          }
-        </ReactMapGL>
+        <div style={{position: 'absolute'}}>
+          <ReactMapGL
+            {...this.state.window}
+            {...this.state.viewport}
+            mapboxApiAccessToken={API_KEY}
+            onViewportChange={this.changeViewport}
+            mapStyle="mapbox://styles/mapbox/navigation-preview-day-v2"
+          >
+            {
+              this.props.officers.map(officer => <OfficerMarker officer={officer} key={officer.name}/>)
+            }
+          </ReactMapGL>
+        </div>
       </ResizeAware>
     )
   }
