@@ -4,7 +4,9 @@ import ReactMapGL, { Viewport } from 'react-map-gl';
 import ResizeAware from 'react-resize-aware';
 import { API_KEY } from '../../../config/mapboxConfig';
 import { IOfficer, WithId } from '../../../types/models';
+import { Event } from '../../../types/models/Event';
 import { OfficerDestination } from '../../../types/models/OfficerDestination';
+import EventMarker from './EventMarker/EventMarker';
 import './MapComponent.css';
 import OfficerMarker from './OfficerMaker/OfficerMarker';
 
@@ -14,6 +16,7 @@ interface IProps {
   officers: Array<WithId<IOfficer>>;
   isTrackingOfficer: boolean;
   officerDestinations: Array<WithId<OfficerDestination>>;
+  events: Array<WithId<Event>>;
   onClickNavigateTo: (officerId: string) => any;
 }
 
@@ -82,6 +85,15 @@ export default class MapComponent extends React.Component<IProps, IState> {
                 />
                 )
               )
+            }
+
+            {
+              this.props.events.map(event => (
+                <EventMarker
+                  event={event}
+                  key={event.id}
+                />
+              ))
             }
           </ReactMapGL>
         </div>
