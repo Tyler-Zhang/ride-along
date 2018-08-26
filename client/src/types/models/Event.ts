@@ -19,3 +19,5 @@ export interface IOfficerInDangerEvent extends IBaseEvent, ISpatialEvent {
 export interface IGunsFiredEvent extends IBaseEvent, ISpatialEvent {
   type: 'guns_fired';
 }
+
+export type Event = IOfficerNavigateToEvent | IOfficerInDangerEvent | IGunsFiredEvent;

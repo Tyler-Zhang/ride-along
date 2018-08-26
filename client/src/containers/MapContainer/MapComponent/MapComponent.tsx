@@ -121,6 +121,14 @@ export default class MapComponent extends React.Component<IProps, IState> {
 
     this.updateMapMutex = true;
 
+    /**
+     * Don't update if some routes haven't been calculated yet
+     */
+    if(props.officerDestinations.some(destination => !destination.route)) {
+      this.updateMapMutex = false;
+      return;
+    }
+
     const map = (mapRef as any).getMap();
     
     // Remove existing route layers

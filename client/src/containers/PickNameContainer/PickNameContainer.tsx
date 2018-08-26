@@ -110,7 +110,7 @@ export default compose(
    */
   branch(
     (props: any) => !!props.name,
-    renderComponent((props: any) => props.children),
+    renderComponent((props: any) => props.children)
   ),
 
   /**

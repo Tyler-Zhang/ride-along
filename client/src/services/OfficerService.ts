@@ -4,12 +4,8 @@ import { IOfficerNavigateToEvent } from '../types/models/Event';
 
 const firestoreApp = app.firestore();
 
-export function stopNavigating(selfId: string) {
-  return firestoreApp.collection(OFFICERS_DESTINATION_COLLECTION).doc(selfId).delete();
-}
-
 export async function navigateToOfficer(selfId: string, otherOfficerId: string) {
-  await stopNavigating(selfId);
+  await firestoreApp.collection(OFFICERS_DESTINATION_COLLECTION).doc(selfId).delete();
 
   await firestoreApp.collection(OFFICERS_DESTINATION_COLLECTION).doc(selfId).set({
     type: 'officer',

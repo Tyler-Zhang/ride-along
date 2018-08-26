@@ -13,7 +13,7 @@ export interface IUserState {
 }
 
 const initialState: IUserState = {
-  name: ''
+  name: 'John'
 };
 
 // Reducer

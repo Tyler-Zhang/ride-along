@@ -6,3 +6,25 @@
   justify-content: center;
   align-content: center;
 }
+
+.app .left-main-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.app .events-section {
+  flex: 0.2;
+  display: flex;
+  margin-left: 20px;
+}
+
+.app .events-section > * {
+  flex: 1;
+}
+
+.app .authenticated-container {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}

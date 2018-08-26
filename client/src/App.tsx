@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Provider } from 'react-redux';
 import store from './store/store';
 
+import ControlPanelContainer from './containers/ControlPanelContainer/ControlPanelContainer';
+import EventsContainer from './containers/EventsContainer/EventsContainer';
 import MapContainer from './containers/MapContainer/MapContainer';
 import PickNameContainer from './containers/PickNameContainer/PickNameContainer';
 
@@ -13,7 +15,16 @@ class App extends React.Component {
       <Provider store={store}>
         <div className="app">
           <PickNameContainer>
-            <MapContainer/>
+            <div className="authenticated-container">
+              <div className="left-main-section">
+                <ControlPanelContainer/>
+                <MapContainer/>
+              </div>
+
+              <div className="events-section">
+                <EventsContainer/>
+              </div>
+            </div>
           </PickNameContainer>
         </div>
       </Provider>
