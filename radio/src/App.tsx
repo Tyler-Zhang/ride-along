@@ -1,21 +1,57 @@
 import * as React from 'react';
 import './App.css';
 
-import logo from './logo.svg';
+import app, { OFFICERS_COLLECTION } from './config/firebaseConfig';
+import Radio from './Radio';
 
-class App extends React.Component {
+interface IState {
+  name: string;
+  officerId?: string;
+}
+
+const firestore = app.firestore();
+
+class App extends React.Component<{}, IState> {
+  constructor(props: {}) {
+    super(props);
+
+    this.state = { 
+      name : '' 
+    };
+  }
+  
   public render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
-      </div>
-    );
+    if (!this.state.name || !this.state.officerId) {
+      return (
+        <button
+          onClick={this.promptForName}
+          title="Login"
+        > Login
+        </button>
+      )
+    }
+
+    return (<Radio officerId={this.state.officerId}/>)
+  }
+
+  private promptForName = async () => {
+    const name = prompt('Whats your name?');
+
+    if (!name) {
+      return;
+    }
+
+    const results = await firestore.collection(OFFICERS_COLLECTION).where('name', '==', name).get();
+
+    if (results.empty) {
+      alert('Name not found!');
+      return;
+    }
+
+    this.setState({
+      name,
+      officerId: results.docs[0].id
+    })
   }
 }
 
