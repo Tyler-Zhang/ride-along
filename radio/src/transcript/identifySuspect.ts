@@ -17,7 +17,13 @@ export default async function identifySuspect (intentResponse: IIntentResponse, 
   const suspectIdentifiedEvent: ISuspectIdentifiedEvent = {
     location: officer.location,
     officerId,
-    attributes: Object.keys(intentResponse.result.parameters).map(key => `${key}: ${intentResponse.result.parameters[key]}`),
+    attributes: Object.keys(intentResponse.result.parameters).map(key => {
+      const value = intentResponse.result.parameters[key];
+
+      if (!value) { return null; }
+
+      return `${key}: ${value}`
+    }).filter(v => !!v) as string[],
     time: firebase.firestore.Timestamp.now(),
     type: 'suspect_identified'
   };

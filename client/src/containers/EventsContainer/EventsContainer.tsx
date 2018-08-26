@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { firestoreConnect } from 'react-redux-firebase';
@@ -15,9 +16,14 @@ interface IProps {
 
 class EventsContainer extends React.Component<IProps> {
   public render() {
+    console.log(this.props.events)
+    const sortedEvents = _.orderBy(this.props.events, 'time', 'desc');
+
+    console.log(sortedEvents)
+    
     return (
       <EventsComponent 
-        events={this.props.events}
+        events={sortedEvents}
         officers={this.props.officers}
       />
     )
@@ -27,7 +33,7 @@ class EventsContainer extends React.Component<IProps> {
 export default compose(
   firestoreConnect([{
       collection: EVENTS_COLLECTION,
-      queryParams: ['orderByChild=time%20DESC']
+      queryParams: ['orderBy=time desc']
     }, 
     OFFICERS_COLLECTION
   ]),

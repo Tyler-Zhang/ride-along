@@ -21,6 +21,7 @@
 
 .app .events-section > * {
   flex: 1;
+  max-height: 100vh;
 }
 
 .app .authenticated-container {

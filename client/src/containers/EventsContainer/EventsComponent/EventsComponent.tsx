@@ -1,4 +1,5 @@
-import { Avatar, List } from 'antd';
+import { List } from 'antd';
+import moment from 'moment';
 import * as React from 'react';
 import { IOfficer, WithId } from '../../../types/models';
 import { Event } from '../../../types/models/Event';
@@ -28,9 +29,8 @@ export default class EventsComponent extends React.Component<IProps> {
         <List.Item
           key={item.id}>
           <List.Item.Meta
-            avatar={<Avatar />}
             title={`${formOfficer.name} navigating to ${toOfficer.name}`}
-            description={`ETA Approximately ${Math.round(Math.random() * 30)} minutes`}
+            description={`${this.minutesElapsedSince(item.time)} minutes ago`}
           />
         </List.Item>
       )
@@ -41,26 +41,52 @@ export default class EventsComponent extends React.Component<IProps> {
         <List.Item
           key={item.id}>
           <List.Item.Meta
-          avatar={<Avatar />}
-          title={`${officer.name} heard gunshots in his area`}
-          description="Be careful!"
+            title={`${officer.name} heard gunshots in his area`}
+            description={`${this.minutesElapsedSince(item.time)} minutes ago`}
           />
         </List.Item>
       )
-    } else {
+    } else if (item.type === 'need_assistance') {
       const officer = this.getOfficerById(item.officerId);
 
       return (
         <List.Item
           key={item.id}>
           <List.Item.Meta
-          avatar={<Avatar />}
-          title={`${officer.name} is in trouble`}
-          description="Close by units please help out"
+            title={`${officer.name} is in trouble`}
+            description={`${this.minutesElapsedSince(item.time)} minutes ago`}
           />
         </List.Item>
       )
+    } else if (item.type === 'going_into_pursuit') {
+      const officer = this.getOfficerById(item.officerId);
+      return (
+        <List.Item
+          key={item.id}>
+          <List.Item.Meta
+            title={`${officer.name} is going into persuit`}
+            description={`${this.minutesElapsedSince(item.time)} minutes ago`}
+          />
+        </List.Item>
+      )
+    } else {
+      const officer = this.getOfficerById(item.officerId);
+      return (
+        <List.Item
+          key={item.id}>
+          <List.Item.Meta
+            title={`${officer.name} just spotted a suspect`}
+            description={`${this.minutesElapsedSince(item.time)} minutes ago`}
+          />
+          <b> Features </b>
+          {item.attributes.map((attribute, i) => <p key={i}>{attribute}</p>)}
+        </List.Item>
+      )
     }
+  }
+
+  private minutesElapsedSince(time: firebase.firestore.Timestamp) {
+    return moment().diff(time.toDate(), 'minutes');
   }
 
   private getOfficerById = (id: string) => {
