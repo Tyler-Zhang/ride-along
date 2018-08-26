@@ -1,8 +1,11 @@
-import {firestore} from 'firebase';
-import {app} from '../config/firebaseConfig';
+var demoData = require('./readDemoFiles');
+console.log(demoData);
 
-const firestoreApp = app.firestore();
+var demo1Data = demoData.demo1Data;
+var demo2Data = demoData.demo2Data;
+var demo3Data = demoData.demo3Data;
 
+/*
 async function run() {
 
   const fakeData = [
@@ -99,3 +102,9 @@ async function run() {
         }
       }
       run();
+*/
+
+
+console.log(demoData);
+console.log(demo2Data);
+console.log(demo3Data);

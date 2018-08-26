@@ -12,8 +12,13 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
+    "filereader": "^0.10.3",
     "firebase": "^5.4.1",
     "firebase-functions": "^2.0.5",
+    "jquery": "^3.3.1",
     "typescript": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^10.9.2"
   }
 }

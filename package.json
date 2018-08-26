@@ -1,5 +1,10 @@
 {
   "dependencies": {
-    "react-map-gl": "^3.3.4"
+    "filereader": "^0.10.3",
+    "firebase": "^5.4.1",
+    "jquery": "^3.3.1",
+    "react-map-gl": "^3.3.4",
+    "sleep": "^5.2.3",
+    "typescript": "^3.0.1"
   }
 }
