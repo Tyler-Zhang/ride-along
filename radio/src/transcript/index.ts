@@ -41,5 +41,5 @@ export async function processTranscript(transcript: string, officerId: string) {
       throw new Error('This intent could not be handled');
   }
 
-  intentHandler(intentResponse, officerId);
+  await intentHandler(intentResponse, officerId);
 } 

@@ -77,6 +77,15 @@ export default class MapComponent extends React.Component<IProps, IState> {
             ref={this.mapRef as any}
           >
             {
+              this.props.events.map(event => (
+                <EventMarker
+                  event={event}
+                  key={event.id}
+                />
+              ))
+            }
+
+            {
               this.props.officers.map(officer => (
                 <OfficerMarker 
                   officer={officer} 
@@ -85,15 +94,6 @@ export default class MapComponent extends React.Component<IProps, IState> {
                 />
                 )
               )
-            }
-
-            {
-              this.props.events.map(event => (
-                <EventMarker
-                  event={event}
-                  key={event.id}
-                />
-              ))
             }
           </ReactMapGL>
         </div>

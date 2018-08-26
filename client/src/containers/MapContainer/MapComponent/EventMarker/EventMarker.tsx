@@ -3,7 +3,7 @@ import { Marker } from 'react-map-gl';
 import { Event } from '../../../../types/models/Event';
 import banditImage from './bandit.png';
 import gunImage from './gun.svg';
-import helpImage from './help.png';
+import warningImage from './warning.png';
 
 
 interface IProps {
@@ -15,7 +15,7 @@ function getAppropriateImage(event: Event) {
     case 'guns_fired':
       return gunImage;
     case 'need_assistance':
-      return helpImage;
+      return warningImage;
     case 'suspect_identified':
       return banditImage;
     default:

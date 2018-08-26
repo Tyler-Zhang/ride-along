@@ -29,7 +29,7 @@ class Radio extends React.Component<any> {
     )
   }
 
-  private toggleRecording = () => {
+  private toggleRecording = async () => {
     if(!this.props.listening) {
       this.props.startListening();
       firestore.collection(OFFICERS_COLLECTION).doc(this.props.officerId).update({
@@ -47,7 +47,7 @@ class Radio extends React.Component<any> {
     });
     
     try {
-      processTranscript(transcript, this.props.officerId);
+      await processTranscript(transcript, this.props.officerId);
     } catch (e) {
       console.error(e);
     }
