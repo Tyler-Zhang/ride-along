@@ -29,8 +29,8 @@ export default ({ officer, onClickNavigateTo }: IProps) => (
     <div className="marker">
       <Tooltip
         placement="bottom"
-        title="speaking"
-        visible={officer.isTalking}
+        visible={true}
+        title={`${officer.name}${officer.isTalking ? "(speaking)" : ""}`}
       >
         <Pulse enabled={officer.isInPursuit} color='blue'>
           <Pulse enabled={officer.isRequestingAssistance}>

@@ -1,4 +1,5 @@
 import detectIntent from '../config/dialogFlowConfig';
+import allGood from './allGood';
 import changeTransportation from './changeTransportation';
 import goInPursuit from './goInPursuit';
 import identifySuspect from './identifySuspect';
@@ -6,6 +7,7 @@ import sendHelp from './sendHelp';
 import shotsFired from './shotsFired';
 import startNavigation from './startNavigation';
 
+const ALL_GOOD_TOPIC = 'all_good';
 const CHANGE_TRANSPORTATION_TOPIC = 'change_transportation';
 const GO_IN_PURSUIT_TOPIC = 'go_in_pursuit';
 const IDENTIFY_SUSPECT_TOPIC = 'identify_suspect';
@@ -14,6 +16,7 @@ const SHOTS_FIRED_TOPIC = 'shots_fired';
 const START_NAVIGATION_TOPIC = 'start_navigation';
 
 const INTENT_MAP = {
+  [ALL_GOOD_TOPIC]: allGood,
   [CHANGE_TRANSPORTATION_TOPIC]: changeTransportation,
   [GO_IN_PURSUIT_TOPIC]: goInPursuit,
   [IDENTIFY_SUSPECT_TOPIC]: identifySuspect,

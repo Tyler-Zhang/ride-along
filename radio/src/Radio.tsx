@@ -1,10 +1,17 @@
 import * as React from 'react';
 import SpeechRecognition from 'react-speech-recognition';
 
+import app, { OFFICERS_COLLECTION } from './config/firebaseConfig';
 import radioPicture from './radio.jpg';
 import { processTranscript } from './transcript';
 
+const firestore = app.firestore();
+
 class Radio extends React.Component<any> {
+  public componentDidMount() {
+    this.props.stopListening();
+  }
+
   public render() {
     const { interimTranscript } = this.props;
 
@@ -25,6 +32,9 @@ class Radio extends React.Component<any> {
   private toggleRecording = () => {
     if(!this.props.listening) {
       this.props.startListening();
+      firestore.collection(OFFICERS_COLLECTION).doc(this.props.officerId).update({
+        isTalking: true
+      });
       return;
     }
     
@@ -32,7 +42,16 @@ class Radio extends React.Component<any> {
     this.props.stopListening();
     const transcript = this.props.transcript;
     
-    processTranscript(transcript, this.props.officerId);
+    firestore.collection(OFFICERS_COLLECTION).doc(this.props.officerId).update({
+      isTalking: false
+    });
+    
+    try {
+      processTranscript(transcript, this.props.officerId);
+    } catch (e) {
+      console.error(e);
+    }
+
   }
 }
 
