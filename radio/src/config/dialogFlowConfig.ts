@@ -14,8 +14,8 @@ export interface IIntentResponse {
     metadata: {
       intentName: string;
     }
+    parameters: Record<string, string>
   }
-  parameters: Record<string, string>
 }
 
 export default async function detectIntent (text: string) {

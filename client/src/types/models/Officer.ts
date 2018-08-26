@@ -8,7 +8,7 @@ export interface IOfficer {
   squad: string;
   location: ILocation;
   isRequestingAssistance: boolean;
-  isInDanger: boolean;
+  isInPursuit: boolean;
   isTalking: boolean;
   speech?: string;
   transportation: 'car' | 'foot' | 'bicycle';

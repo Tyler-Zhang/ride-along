@@ -75,7 +75,7 @@ class PickNameContainer extends React.Component<IProps> {
 
   private createOfficer = async (name: string) => {
     const officerObject: IOfficer = {
-      isInDanger: false,
+      isInPursuit: false,
       isRequestingAssistance: false,
       isTalking: false,
       location: new firestore.GeoPoint(43, -79),

@@ -32,7 +32,7 @@ export default ({ officer, onClickNavigateTo }: IProps) => (
         title="speaking"
         visible={officer.isTalking}
       >
-        <Pulse enabled={officer.isInDanger || officer.isRequestingAssistance}>
+        <Pulse enabled={officer.isRequestingAssistance}>
           <OfficerActionPopover
             onClickNavigateTo={onClickNavigateTo}
           >
