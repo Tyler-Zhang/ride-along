@@ -32,12 +32,14 @@ export default ({ officer, onClickNavigateTo }: IProps) => (
         title="speaking"
         visible={officer.isTalking}
       >
-        <Pulse enabled={officer.isRequestingAssistance}>
-          <OfficerActionPopover
-            onClickNavigateTo={onClickNavigateTo}
-          >
-            <img className="icon" src={getAppropriateImage(officer)}/>
-          </OfficerActionPopover>
+        <Pulse enabled={officer.isInPursuit} color='blue'>
+          <Pulse enabled={officer.isRequestingAssistance}>
+            <OfficerActionPopover
+              onClickNavigateTo={onClickNavigateTo}
+            >
+              <img className="icon" src={getAppropriateImage(officer)}/>
+            </OfficerActionPopover>
+          </Pulse>
         </Pulse>
       </Tooltip>
     </div>

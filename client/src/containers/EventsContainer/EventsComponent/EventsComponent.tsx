@@ -47,7 +47,7 @@ export default class EventsComponent extends React.Component<IProps> {
           />
         </List.Item>
       )
-    } else if (item.type === "officer_in_danger") {
+    } else {
       const officer = this.getOfficerById(item.officerId);
 
       return (
@@ -60,8 +60,6 @@ export default class EventsComponent extends React.Component<IProps> {
           />
         </List.Item>
       )
-    } else {
-      return <div/>
     }
   }
 

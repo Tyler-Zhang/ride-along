@@ -3,6 +3,7 @@ import './Pulse.css';
 
 interface IProps {
   enabled: boolean;
+  color?: 'red' | 'blue';
 }
 
 interface IState {
@@ -30,9 +31,10 @@ export default class Pulse extends React.PureComponent<IProps, IState> {
   }
 
   public render() {
+    const { color = 'red' } = this.props;
     return (
       <div 
-        className={`pulse${this.props.enabled ? " pulse-enabled" : ""}`} 
+        className={`pulse${ this.props.enabled ? ` pulse-enabled-${color}` : "" }`} 
         ref={this.containerRef as any} 
         style={{ height: this.state.height }}
       >
