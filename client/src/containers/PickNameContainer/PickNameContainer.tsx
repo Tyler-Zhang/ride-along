@@ -74,6 +74,8 @@ class PickNameContainer extends React.Component<IProps> {
   }
 
   private createOfficer = async (name: string) => {
+    name = name.toLowerCase();
+    
     const officerObject: IOfficer = {
       isInPursuit: false,
       isRequestingAssistance: false,
