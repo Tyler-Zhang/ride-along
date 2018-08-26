@@ -24,6 +24,10 @@ const firebaseConfig_1 = __importDefault(require("./config/firebaseConfig"));
 const argv = require('minimist')(process.argv.slice(2));
 const officerName = argv.n;
 const fileName = argv.f;
+let timeout = 3000;
+if (argv.t) {
+    timeout = Number(argv.t);
+}
 if (!officerName || !fileName) {
     throw new Error('Need to provide a name -n and a file -f');
 }
@@ -41,7 +45,7 @@ function run() {
             officerRef.update({
                 location: new firebase_1.default.firestore.GeoPoint(Number(lat), Number(long))
             });
-        }, 5000);
+        }, timeout);
     });
 }
 run();
