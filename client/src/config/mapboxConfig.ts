@@ -1,1 +1,1 @@
-export const API_KEY = "pk.eyJ1IjoicmlkZWFsb25nIiwiYSI6ImNqbDh3dWk0ODNuZHkzdXBnZm51b2s0emsifQ.eQtWETMUpQkkw2KKLGOO2w";
+export const API_KEY = process.env.REACT_APP_MAPBOX_API_KEY as string;

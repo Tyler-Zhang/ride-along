@@ -1,0 +1,3 @@
+spoof_1: (cd demo-gps-spoofer && node dist/index.js -f route1.csv -n $OFFICER_NAME_1)
+spoof_2: (cd demo-gps-spoofer && node dist/index.js -f route2.csv -n $OFFICER_NAME_2)
+spoof_3: (cd demo-gps-spoofer && node dist/index.js -f route3.csv -n $OFFICER_NAME_3)

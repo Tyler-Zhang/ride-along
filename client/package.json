@@ -22,7 +22,7 @@
     "reform": "^0.3.16"
   },
   "scripts": {
-    "start": "react-scripts-ts start",
+    "start": "REACT_APP_GOOGLE_API_KEY=$GOOGLE_API_KEY REACT_APP_GOOGLE_AUTH_DOMAIN=$GOOGLE_AUTH_DOMAIN REACT_APP_GOOGLE_DATABASE_URL=$GOOGLE_DATABASE_URL REACT_APP_GOOGLE_PROJECT_ID=$GOOGLE_PROJECT_ID REACT_APP_GOOGLE_STORAGE_BUCKET=$GOOGLE_STORAGE_BUCKET REACT_APP_GOOGLE_MESSAGING_SENDER_ID=$GOOGLE_MESSAGING_SENDER_ID REACT_APP_MAPBOX_API_KEY=$MAPBOX_API_KEY react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
