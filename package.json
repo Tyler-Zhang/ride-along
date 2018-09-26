@@ -3,5 +3,9 @@
     "foreman": "^3.0.1",
     "react-map-gl": "^3.3.4",
     "ts-node": "^7.0.1"
+  },
+  "scripts": {
+    "start": "nf start",
+    "spoofs": "nf start -j Procfile.spoofs"
   }
 }
